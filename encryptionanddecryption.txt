@@ -1,0 +1,73 @@
+7. Implementation of data encryption and decryption.
+AIM:
+Program:
+Program to implement RSA(Asymmetric Key algorithm)
+#include<stdio.h>
+#include<string.h>
+#include<math.h>
+void main( )
+{ int n,i,s,n2,k1,p,q,d,m1,e1,l5,z,p2[30],s1,c[30];
+unsigned long int l3,m,l4,k2;
+double l2,l1,l6;
+float e,l;
+char p1[30];
+clrscr();
+printf(“Enter two prime numbers p and q \n”);
+scanf(“%d%d”,&p,&q);
+n=p*q;
+z=((p-1)*(q-1));
+printf(“Enter the value of d:\n”);
+scanf(“%d”,&d);
+l=l*(abs(z));
+e=ceil(l/d);
+printf(“%d%d%f\n”,n,z,e);
+printf(“ENCRYPTION-CIPHER TEXT”);
+printf(“Enter the plaintext\n”);
+scanf(“%s”,p1);
+for(i=0;i<strlen(p1);i++)
+{
+s=p1[I]-64;
+printf(“%d”,s);
+e1=(int)e;
+l1=pow(((double)s),((double)e1));
+l4=(unsigned long int)l1;
+k2=l4%n;
+c[i]=(int)k2;
+printf(“cipher:%d\n”,c[i]);
+}
+printf(“\n”);
+for(i=0;i<strlen(p1);i++)
+{
+l2=(pow(((double)c[i]),((double)d)));
+l5=(int)(l2/n);
+l6=l5*33;
+m=l2-l6;
+m1=(int)m;
+k1=m1+64;
+printf(“%c\n”,k1);
+}
+getch( );
+}
+Output:
+Enter two prime numbers p and q
+3 11
+Enter the value of d:
+7
+33 20 3.000000
+ENCRYPTION CIPHER TEXT
+Enter the plain text
+SUZANNE
+19cipher:28
+21cipher:21
+26cipher:20
+1cipher:1
+14cipher:5
+14cipher:5
+5cipher:26
+S
+U
+Z
+A
+N
+N
+E

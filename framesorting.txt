@@ -1,0 +1,111 @@
+.Write a program for frame sorting technique used in buffers.
+AIM:
+Program for frame sorting:
+#include <stdlib.h>
+#include <time.h>
+#include <stdio.h>
+#include <conio.h>
+#include <string.h>
+#define FSize 3
+typedef struct packet{int SeqNum; char Data[FSize+1];}packet;
+struct packet *readdata, *transdata;
+int divide(char *msg) {
+int msglen, NoOfPacket, i, j;
+msglen = strlen(msg);
+NoOfPacket = msglen/FSize;
+if ((msglen%FSize)!=0) NoOfPacket++;
+readdata = (struct packet *)malloc(sizeof(packet) * NoOfPacket);
+for(i = 0; i<NoOfPacket; i++) {
+readdata[i].SeqNum = i + 1;
+for (j = 0; (j <FSize) && (*msg != '\0'); j++, msg++)
+readdata[i].Data[j] = *msg;
+readdata[i].Data[j] = '\0';
+}
+printf("\nThe Message has been divided as follows\n");
+printf("\nPacket No. Data\n\n");
+for (i = 0; i<NoOfPacket; i++)
+printf(" %2d %s\n", readdata[i].SeqNum,
+readdata[i].Data);
+return NoOfPacket;
+Department of CSE Computer Networks & Web Technologies Lab
+KMIT Page no:64
+}
+void shuffle(int NoOfPacket) {
+int *Status;
+int i, j, trans;
+randomize();
+Status=(int * )calloc(NoOfPacket, sizeof(int));
+transdata = (struct packet *)malloc(sizeof(packet) * NoOfPacket);
+for (i = 0; i<NoOfPacket;) {
+trans = rand()%NoOfPacket;
+if (Status[trans]!=1) {
+transdata[i].SeqNum = readdata[trans].SeqNum;
+strcpy(transdata[i].Data, readdata[trans].Data);
+i++; Status[trans] = 1;
+}
+}
+free(Status);
+}
+void sortframes(int NoOfPacket) {
+packet temp;
+int i, j;
+for (i = 0; i<NoOfPacket; i++)
+for (j = 0; j <NoOfPacket – i-1; j++)
+if (transdata[j].SeqNum>transdata[j + 1].SeqNum) {
+temp.SeqNum = transdata[j].SeqNum;
+strcpy(temp.Data, transdata[j].Data);
+transdata[j].SeqNum = transdata[j + 1].SeqNum;
+strcpy(transdata[j].Data, transdata[j + 1].Data);
+transdata[j + 1].SeqNum = temp.SeqNum;
+strcpy(transdata[j + 1].Data, temp.Data);
+} }
+Department of CSE Computer Networks & Web Technologies Lab
+KMIT Page no:65
+void receive(int NoOfPacket) {
+int i;
+printf("\nPackets received in the following order\n");
+for (i = 0; i<NoOfPacket; i++) printf("%4d", transdata[i].SeqNum);
+sortframes(NoOfPacket);
+printf("\n\nPackets in order after sorting..\n");
+for (i = 0; i<NoOfPacket; i++) printf("%4d", transdata[i].SeqNum);
+printf("\n\nMessage received is :\n");
+for (i = 0; i<NoOfPacket; i++) printf("%s", transdata[i].Data);
+}
+void main() {
+char *msg;
+int NoOfPacket;
+clrscr();
+printf("\nEnter The message to be Transmitted :\n");
+scanf("%[^\n]", msg);
+NoOfPacket = divide(msg);
+shuffle(NoOfPacket);
+receive(NoOfPacket);
+free(readdata);
+free(transdata);
+getch();
+}
+Output:
+Enter The message to be Transmitted :
+hi, it was nice meeting u on sunday
+The Message has been divided as follows
+Packet No. Data
+1 hi,
+2 it
+Department of CSE Computer Networks & Web Technologies Lab
+KMIT Page no:66
+3 wa
+4 s n
+5 ice
+6 me
+7 eti
+8 ng
+9 u o
+10 n s
+11 und
+12 ay
+Packets received in the following order
+4 2 6 3 5 1 8 9 11 7 12 10
+Packets in order after sorting..
+1 2 3 4 5 6 7 8 9 10 11 12
+Message received is :
+hi, it was nice meeting u on Sunday
